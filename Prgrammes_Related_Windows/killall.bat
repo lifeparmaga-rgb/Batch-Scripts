@@ -1,0 +1,2 @@
+@echo off
+taskkill /F /FI "USERNAME eq %USERNAME%" /FI "STATUS eq RUNNING"

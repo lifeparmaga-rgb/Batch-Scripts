@@ -1,0 +1,34 @@
+$onSound  = "C:\Windows\Media\Windows Notify System Generic.wav"
+$offSound = "C:\Windows\Media\Windows Ding.wav"
+
+$adapter = Get-NetAdapter | Where-Object {
+    $_.InterfaceDescription -Match "Wireless|Wi-Fi"
+} | Select-Object -First 1
+
+if (!$adapter) { exit }
+
+Add-Type -AssemblyName System.Media
+$player = New-Object System.Media.SoundPlayer
+
+if ($adapter.Status -eq "Up") {
+    Disable-NetAdapter -Name $adapter.Name -Confirm:$false
+    $state = "OFF"
+    $player.SoundLocation = $offSound
+    $player.Play()
+} else {
+    Enable-NetAdapter -Name $adapter.Name -Confirm:$false
+    $state = "ON"
+    $player.SoundLocation = $onSound
+    $player.Play()
+}
+
+[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
+$template = [Windows.UI.Notifications.ToastTemplateType]::ToastText02
+$xml = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent($template)
+$text = $xml.GetElementsByTagName("text")
+$text.Item(0).AppendChild($xml.CreateTextNode("Wi-Fi Status")) | Out-Null
+$text.Item(1).AppendChild($xml.CreateTextNode("Wi-Fi turned $state")) | Out-Null
+
+$toast = [Windows.UI.Notifications.ToastNotification]::new($xml)
+$notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("WiFi Toggle")
+$notifier.Show($toast)
