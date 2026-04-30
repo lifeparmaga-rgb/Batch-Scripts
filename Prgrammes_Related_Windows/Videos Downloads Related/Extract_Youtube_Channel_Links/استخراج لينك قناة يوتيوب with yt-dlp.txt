@@ -1,0 +1,1 @@
+yt-dlp "%PLAYLIST_URL%" --yes-playlist -o "Playlists\%%(playlist)s\%%(playlist_index)s - %%(title)s.%%(ext)s" -f "bv*+ba/b" --merge-output-format mp4 --embed-thumbnail --add-metadata --write-sub --sub-lang "en,ar" --ignore-errors --continue --no-overwrites --download-archive download-archive.txt

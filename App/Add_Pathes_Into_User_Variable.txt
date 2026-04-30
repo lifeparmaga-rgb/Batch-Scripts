@@ -1,0 +1,9 @@
+@echo off
+set "ROOT=D:\Batch Scripts"
+
+for /R "%ROOT%" %%F in (.) do (
+    echo Adding %%F to PATH
+    setx PATH "%PATH%;%%F"
+)
+
+pause
