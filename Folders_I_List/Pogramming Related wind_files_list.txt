@@ -1,0 +1,98 @@
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows 
+============================== 
+    clean.bat 
+    Clean_PC_V4.bat 
+    Close Taskbar Windows.ps1 
+    Close_PC.ps1 
+    e..bat 
+    e.bat 
+    ex.bat 
+    files_list.txt 
+    header.bat 
+    header_create.bat 
+    killall.bat 
+    ls.bat 
+    names.bat 
+    open.bat 
+    pshell.bat 
+    shell.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Any_Img_To_Ico 
+============================== 
+    ConvertToICO.bat 
+    ico_open.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Change_Folder_Icon 
+============================== 
+    ChangeFolderIcon_PNGtoICO.bat 
+    FolderChangeIconDirect.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\File Direction Format 
+============================== 
+    align_md_to_clip.bat 
+    Batch_Script_Direction_md_For_All_&_CodeBlock.bat 
+    convert-all-html.bat 
+    final-align-table-template.bat 
+    html_align.bat 
+    md_3_files.bat 
+    toc_sample.bat 
+    wrap_md_rtl.bat 
+    _md.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Shutdown 
+============================== 
+    hibernateoff.bat 
+    hibernateon.bat 
+    hiberoff.bat 
+    hiberon.bat 
+    restart.bat 
+    shutdown.bat 
+    shutdown_cancel.bat 
+    shutdown_timer.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Toggle_WiFi 
+============================== 
+    get_wifi_info.bat 
+    RunHidden.vbs 
+    Toggle-WiFi.txt 
+    wifi.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Videos Downloads Related 
+============================== 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Videos Downloads Related\Youtube _PlayListLink + Title_Extractor 
+============================== 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Videos Downloads Related\Youtube _PlayListLink + Title_Extractor\Get_Playlist_Links_Python 
+============================== 
+    extract_links (1).py 
+    extract_links.py 
+    links_Extracted.txt 
+    shorts_links_extract.py 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Videos Downloads Related\Youtube _PlayListLink + Title_Extractor\Playlists_Titles 
+============================== 
+    Tiltles_Of_Playlist.txt 
+    youtube_titles.txt 
+    Youtube_Titles_Get_1.bat 
+    Youtube_Titles_Get_v2.bat 
+    Youtube_Titles_Get_v3.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Videos Downloads Related\Youtube_Extractor_Links+Titles 
+============================== 
+    popup.html 
+    yt-channel-extractor.html 
+    yt-extractor-extension.zip 
+    yt-extractor.html 
+============================== 
+[FOLDER] D:\Batch Scripts\Prgrammes_Related_Windows\Videos Downloads Related\YT-DLP 
+============================== 
+    file_loop_lines.bat 
+    play.bat 
+    yt.bat 
+    ytf.bat 
+    ytf_playlist_order.bat 
+    ytx.bat 
+    yt_search.bat 
+    امر تنزيل cookies when forbidden.txt 

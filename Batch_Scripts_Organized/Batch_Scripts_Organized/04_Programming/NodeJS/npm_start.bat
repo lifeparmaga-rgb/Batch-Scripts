@@ -1,0 +1,2 @@
+start startNode.bat
+code .

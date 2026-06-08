@@ -1,0 +1,34 @@
+============================== 
+[FOLDER] D:\Batch Scripts\Programing_Scripts 
+============================== 
+    .acp.bat 
+    .gitignore.bat 
+    acp.bat 
+    c#snip.bat 
+    chrome_extentions_page.bat 
+    cod.bat 
+    create_app.bat 
+    csharpsnippet.txt 
+    dev.bat 
+    files_list.txt 
+    github.bat 
+    githubtoken.bat 
+    globalconf.txt 
+    ins_express.bat 
+    localconf.bat 
+    mongo_defaultUrl.bat 
+    Node_nd.bat 
+    npm_start.bat 
+    rsa_id.bat 
+    script.js 
+    settings_vsc.bat 
+    start_node.bat 
+    styles.css 
+============================== 
+[FOLDER] D:\Batch Scripts\Programing_Scripts\mongodb 
+============================== 
+    mongo.bat 
+    mongodb_url.bat 
+    mongodpath.bat 
+    mongo_defaultUrl.bat 
+    mong_notwork.bat 

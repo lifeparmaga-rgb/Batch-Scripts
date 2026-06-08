@@ -1,0 +1,431 @@
+<html>
+<head>
+<title>مدير الملفات الاحترافي</title>
+
+<HTA:APPLICATION
+APPLICATIONNAME="ProfessionalFileManager"
+BORDER="thin"
+CAPTION="yes"
+SHOWINTASKBAR="yes"
+SINGLEINSTANCE="yes"
+SYSMENU="yes"
+SCROLL="no"
+/>
+
+<meta charset="utf-8">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Tahoma;
+    background:#1e1e1e;
+    color:white;
+    overflow:hidden;
+}
+
+/* =========================
+   الشريط الجانبي
+========================= */
+
+#sidebar{
+    position:absolute;
+    left:0;
+    top:0;
+    width:220px;
+    height:100%;
+    background:#111;
+    border-right:1px solid #333;
+    overflow:auto;
+}
+
+.logo{
+    padding:20px;
+    text-align:center;
+    font-size:22px;
+    color:#4da3ff;
+    border-bottom:1px solid #333;
+}
+
+.sidebtn{
+    padding:15px;
+    cursor:pointer;
+    border-bottom:1px solid #222;
+}
+
+.sidebtn:hover{
+    background:#222;
+}
+
+/* =========================
+   المحتوى
+========================= */
+
+#main{
+    margin-left:220px;
+    height:100%;
+}
+
+#topbar{
+    background:#181818;
+    padding:10px;
+    border-bottom:1px solid #333;
+}
+
+button{
+    background:#0a84ff;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0066cc;
+}
+
+input{
+    padding:8px;
+    width:250px;
+    border:none;
+    border-radius:5px;
+    background:#2d2d2d;
+    color:white;
+}
+
+/* =========================
+   الملفات
+========================= */
+
+#files{
+    height:calc(100% - 70px);
+    overflow:auto;
+    padding:15px;
+}
+
+.item{
+    background:#2b2b2b;
+    margin-bottom:8px;
+    padding:12px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.2s;
+    font-size:16px;
+}
+
+.item:hover{
+    background:#3a3a3a;
+    transform:scale(1.01);
+}
+
+.folder{
+    color:#ffd54f;
+}
+
+.file{
+    color:#90caf9;
+}
+
+.favorite{
+    color:#ffcc66;
+}
+
+/* =========================
+   المسار
+========================= */
+
+#path{
+    margin-top:10px;
+    color:#aaa;
+    font-size:13px;
+}
+
+</style>
+
+<script language="javascript">
+
+// ====================================
+// الإعدادات
+// ====================================
+
+var ROOT = "D:\\Test\\Files";
+
+var current = ROOT;
+
+var favorites = [];
+
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+
+// ====================================
+// تحميل المجلد
+// ====================================
+
+function loadFolder(path){
+
+    current = path;
+
+    document.getElementById("path").innerText = path;
+
+    var filesDiv = document.getElementById("files");
+
+    filesDiv.innerHTML = "";
+
+    try{
+
+        var folder = fso.GetFolder(path);
+
+        // المجلدات
+        var folders = new Enumerator(folder.SubFolders);
+
+        for(; !folders.atEnd(); folders.moveNext()){
+
+            var f = folders.item();
+
+            filesDiv.innerHTML +=
+            "<div class='item folder'>" +
+            "<span onclick='loadFolder(\""+f.Path+"\")'>📁 "
+            + f.Name +
+            "</span>" +
+
+            "<button style='float:right' onclick='event.cancelBubble=true;addFavorite(\""+f.Path+"\")'>⭐</button>" +
+
+            "</div>";
+        }
+
+        // الملفات
+        var files = new Enumerator(folder.Files);
+
+        for(; !files.atEnd(); files.moveNext()){
+
+            var file = files.item();
+
+            filesDiv.innerHTML +=
+            "<div class='item file'>" +
+
+            "<span onclick='openFile(\""+file.Path+"\")'>📄 "
+            + file.Name +
+            "</span>" +
+
+            "<button style='float:right' onclick='event.cancelBubble=true;addFavorite(\""+file.Path+"\")'>⭐</button>" +
+
+            "</div>";
+        }
+
+    }catch(e){
+
+        alert("تعذر فتح المجلد");
+    }
+}
+
+// ====================================
+// فتح ملف
+// ====================================
+
+function openFile(path){
+
+    var shell = new ActiveXObject("WScript.Shell");
+
+    shell.Run('"' + path + '"');
+}
+
+// ====================================
+// رجوع
+// ====================================
+
+function goBack(){
+
+    if(current != ROOT){
+
+        var parent = fso.GetParentFolderName(current);
+
+        loadFolder(parent);
+    }
+}
+
+// ====================================
+// بحث
+// ====================================
+
+function searchFiles(){
+
+    var keyword = document.getElementById("search").value.toLowerCase();
+
+    var filesDiv = document.getElementById("files");
+
+    filesDiv.innerHTML = "";
+
+    recursiveSearch(ROOT, keyword);
+}
+
+function recursiveSearch(path, keyword){
+
+    try{
+
+        var folder = fso.GetFolder(path);
+
+        var files = new Enumerator(folder.Files);
+
+        for(; !files.atEnd(); files.moveNext()){
+
+            var file = files.item();
+
+            if(file.Name.toLowerCase().indexOf(keyword) != -1){
+
+                document.getElementById("files").innerHTML +=
+                "<div class='item file'>" +
+
+                "<span onclick='openFile(\""+file.Path+"\")'>📄 "
+                + file.Name +
+                "</span>" +
+
+                "</div>";
+            }
+        }
+
+        var subFolders = new Enumerator(folder.SubFolders);
+
+        for(; !subFolders.atEnd(); subFolders.moveNext()){
+
+            recursiveSearch(subFolders.item().Path, keyword);
+        }
+
+    }catch(e){}
+}
+
+// ====================================
+// المفضلة
+// ====================================
+
+function addFavorite(path){
+
+    if(favorites.indexOf(path) == -1){
+
+        favorites.push(path);
+
+        alert("تمت الإضافة للمفضلة");
+    }
+}
+
+function showFavorites(){
+
+    var filesDiv = document.getElementById("files");
+
+    filesDiv.innerHTML = "";
+
+    if(favorites.length == 0){
+
+        filesDiv.innerHTML =
+        "<div class='item'>لا توجد مفضلة</div>";
+
+        return;
+    }
+
+    for(var i=0;i<favorites.length;i++){
+
+        var path = favorites[i];
+
+        var name = fso.GetFileName(path);
+
+        filesDiv.innerHTML +=
+        "<div class='item favorite'>" +
+
+        "<span onclick='openFavorite(\""+path+"\")'>⭐ "
+        + name +
+        "</span>" +
+
+        "</div>";
+    }
+}
+
+function openFavorite(path){
+
+    if(fso.FolderExists(path)){
+
+        loadFolder(path);
+
+    }else{
+
+        openFile(path);
+    }
+}
+
+// ====================================
+// تحديث
+// ====================================
+
+function refreshFolder(){
+
+    loadFolder(current);
+}
+
+// ====================================
+// بدء التشغيل
+// ====================================
+
+window.onload = function(){
+
+    loadFolder(ROOT);
+}
+
+</script>
+</head>
+
+<body>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<div id="sidebar">
+
+<div class="logo">
+📂 مدير الملفات
+</div>
+
+<div class="sidebtn" onclick="loadFolder(ROOT)">
+🏠 الرئيسية
+</div>
+
+<div class="sidebtn" onclick="showFavorites()">
+⭐ المفضلة
+</div>
+
+<div class="sidebtn" onclick="refreshFolder()">
+🔄 تحديث
+</div>
+
+<div class="sidebtn" onclick="window.close()">
+❌ خروج
+</div>
+
+</div>
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div id="main">
+
+<div id="topbar">
+
+<button onclick="goBack()">⬅ رجوع</button>
+
+<input
+type="text"
+id="search"
+placeholder="بحث عن ملف..."
+>
+
+<button onclick="searchFiles()">🔍 بحث</button>
+
+<div id="path"></div>
+
+</div>
+
+<div id="files"></div>
+
+</div>
+
+</body>
+</html>

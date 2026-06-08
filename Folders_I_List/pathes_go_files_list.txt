@@ -1,0 +1,81 @@
+============================== 
+[FOLDER] D:\Batch Scripts\Pathes_Go 
+============================== 
+    files_list.txt 
+============================== 
+[FOLDER] D:\Batch Scripts\Pathes_Go\system folders 
+============================== 
+-- partitions of sys | win ()
+    appdata.bat 
+    env.bat 
+    localdir.bat 
+    roaming.bat 
+    user.bat 
+    userprofile.bat 
+    STARTUP.BAT 
+    home.bat 
+--------------------------------
+    bat.bat 
+    c.bat 
+    d.bat 
+    docs.bat 
+    docx.bat 
+    downs.bat 
+
+    list_table_v1.bat 
+    list_table_v2.bat 
+
+    vids.bat 
+    screens.bat 
+    music.bat 
+    obj.bat 
+    pics.bat 
+
+============================== 
+[FOLDER] D:\Batch Scripts\Pathes_Go\Unknown 
+============================== 
+    ditto.bat 
+    dskt.bat 
+    input_prog.bat 
+    p.bat 
+    pathes.bat 
+    scripts.bat 
+    test.bat 
+    tst.bat 
+    windows.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Pathes_Go\Websites 
+============================== 
+
+json.bat 
+mama.bat 
+ext.bat     
+extensions.bat 
+
+
+    auto_translate.bat 
+    avast.bat 
+    brave.bat 
+    deepseek.bat 
+    
+    firefox.bat 
+    gdb.bat 
+    github.bat 
+    google.bat 
+    googlefonts.bat 
+    googlekeeps.bat 
+    google_translate_download_link.bat 
+    gpt.bat 
+    
+    opera.bat 
+    photoshop.bat 
+    salah.bat 
+    translate.bat 
+    typelit.bat 
+    vercel.bat 
+    virus.bat 
+    w3school.bat 
+    yout.bat 
+    youtlength.bat 
+    YoutSearch - Copy.bat 
+    YoutSearch_Solve_Space.bat 

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>YT Link Extractor</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #ff0040;
+    --accent2: #ff6b35;
+    --green: #00ff88;
+    --text: #e0e0f0;
+    --muted: #555570;
+    --mono: 'Share Tech Mono', monospace;
+    --arabic: 'Tajawal', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--arabic);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,0,64,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,0,64,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridPan 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes gridPan { from{background-position:0 0} to{background-position:40px 40px} }
+
+  /* scanlines */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,.15) 2px, rgba(0,0,0,.15) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown .6s ease both;
+  }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:none} }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .logo-icon {
+    width: 48px; height: 48px;
+    background: var(--accent);
+    border-radius: 12px;
+    display: grid; place-items: center;
+    box-shadow: 0 0 30px rgba(255,0,64,.5);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100%{box-shadow:0 0 30px rgba(255,0,64,.5)}
+    50%{box-shadow:0 0 50px rgba(255,0,64,.9)}
+  }
+  .logo-icon svg { width:24px; height:24px; fill:#fff; }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    letter-spacing: .1em;
+    background: linear-gradient(90deg, #fff 0%, var(--accent2) 50%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    font-size: .85rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin-top: 6px;
+    letter-spacing: .05em;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    animation: fadeUp .5s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: .6;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+
+  label {
+    display: block;
+    font-size: .8rem;
+    font-family: var(--mono);
+    color: var(--accent2);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .input-wrap {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  input[type="text"] {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    direction: ltr;
+  }
+  input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255,0,64,.15);
+  }
+  input[type="text"]::placeholder { color: var(--muted); }
+
+  /* ── DATE FILTER ── */
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .filter-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 8px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: .78rem;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+  }
+  .filter-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+  .filter-btn.active {
+    background: rgba(255,0,64,.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* custom date */
+  .custom-date-wrap {
+    display: none;
+    margin-bottom: 20px;
+    animation: fadeUp .3s ease both;
+  }
+  .custom-date-wrap.show { display: block; }
+  input[type="date"] {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: .85rem;
+    outline: none;
+    width: 100%;
+    transition: border-color .2s;
+    direction: ltr;
+  }
+  input[type="date"]:focus { border-color: var(--accent); }
+
+  /* ── BUTTON ── */
+  .btn-extract {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-family: var(--arabic);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform .15s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(255,0,64,.4);
+    letter-spacing: .05em;
+  }
+  .btn-extract:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255,0,64,.6);
+  }
+  .btn-extract:active:not(:disabled) { transform: translateY(0); }
+  .btn-extract:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-extract .btn-shine {
+    position: absolute;
+    top: -50%; left: -75%;
+    width: 50%; height: 200%;
+    background: rgba(255,255,255,.15);
+    transform: skewX(-20deg);
+    animation: shine 3s ease infinite;
+  }
+  @keyframes shine { 0%,100%{left:-75%} 50%{left:125%} }
+
+  /* ── PROGRESS ── */
+  #progressArea {
+    display: none;
+    margin-bottom: 24px;
+    animation: fadeUp .3s ease both;
+  }
+  #progressArea.show { display: block; }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-family: var(--mono);
+    font-size: .8rem;
+    color: var(--muted);
+  }
+  .progress-status { color: var(--green); }
+
+  .progress-bar-wrap {
+    background: var(--bg);
+    border-radius: 999px;
+    height: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 999px;
+    transition: width .3s ease;
+    width: 0%;
+    box-shadow: 0 0 10px rgba(255,0,64,.6);
+  }
+
+  /* indeterminate shimmer */
+  .progress-bar.indeterminate {
+    width: 40% !important;
+    animation: indeterminate 1.4s ease-in-out infinite;
+  }
+  @keyframes indeterminate {
+    0%   { margin-left: -40%; }
+    100% { margin-left: 110%; }
+  }
+
+  .log-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    max-height: 140px;
+    overflow-y: auto;
+    font-family: var(--mono);
+    font-size: .78rem;
+    line-height: 1.8;
+    color: var(--muted);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .log-box .log-line { display: block; }
+  .log-box .log-line.ok { color: var(--green); }
+  .log-box .log-line.err { color: var(--accent); }
+  .log-box .log-line.info { color: var(--accent2); }
+
+  /* ── RESULTS ── */
+  #resultsArea {
+    display: none;
+    animation: fadeUp .4s ease both;
+  }
+  #resultsArea.show { display: block; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--green);
+    display: block;
+  }
+  .stat-label {
+    font-size: .72rem;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .links-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: var(--mono);
+    font-size: .76rem;
+    line-height: 2;
+    color: #6a9fb5;
+    direction: ltr;
+    margin-bottom: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .btn-download {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    border: 2px solid var(--green);
+    border-radius: 12px;
+    color: var(--green);
+    font-family: var(--arabic);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .05em;
+    box-shadow: 0 0 20px rgba(0,255,136,.1);
+  }
+  .btn-download:hover {
+    background: rgba(0,255,136,.1);
+    box-shadow: 0 0 30px rgba(0,255,136,.3);
+    transform: translateY(-1px);
+  }
+
+  .yt-dlp-hint {
+    margin-top: 14px;
+    background: rgba(0,255,136,.05);
+    border: 1px solid rgba(0,255,136,.15);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: .78rem;
+    color: var(--muted);
+    direction: ltr;
+  }
+  .yt-dlp-hint span { color: var(--green); }
+
+  /* ── ERROR ── */
+  .error-box {
+    background: rgba(255,0,64,.07);
+    border: 1px solid rgba(255,0,64,.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: .85rem;
+    color: #ff6680;
+    display: none;
+    margin-bottom: 16px;
+    animation: fadeUp .3s ease both;
+    font-family: var(--mono);
+  }
+  .error-box.show { display: block; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: var(--muted);
+    letter-spacing: .08em;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+      </div>
+      <h1>YT LINK EXTRACTOR</h1>
+    </div>
+    <p class="subtitle">// استخرج لينكات القناة جاهزة لـ yt-dlp</p>
+  </header>
+
+  <!-- Input Card -->
+  <div class="card">
+
+    <label>// رابط القناة أو قائمة التشغيل</label>
+    <div class="input-wrap">
+      <input type="text" id="urlInput" placeholder="https://www.youtube.com/@channel/shorts" />
+    </div>
+
+    <label>// فلترة حسب التاريخ</label>
+    <div class="filter-grid">
+      <button class="filter-btn active" data-days="0">بدون فلترة</button>
+      <button class="filter-btn" data-days="7">آخر أسبوع</button>
+      <button class="filter-btn" data-days="30">آخر شهر</button>
+      <button class="filter-btn" data-days="90">آخر 3 شهور</button>
+      <button class="filter-btn" data-days="365">آخر سنة</button>
+      <button class="filter-btn" data-days="custom">تاريخ مخصص</button>
+    </div>
+
+    <div class="custom-date-wrap" id="customDateWrap">
+      <label>// أدخل التاريخ</label>
+      <input type="date" id="customDate"/>
+    </div>
+
+    <div class="error-box" id="errorBox"></div>
+
+    <button class="btn-extract" id="extractBtn" onclick="startExtract()">
+      <span class="btn-shine"></span>
+      ⚡ استخرج اللينكات
+    </button>
+  </div>
+
+  <!-- Progress -->
+  <div class="card" id="progressArea">
+    <div class="progress-header">
+      <span>// جاري الاستخراج</span>
+      <span class="progress-status" id="progressStatus">جاري الاتصال...</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar indeterminate" id="progressBar"></div>
+    </div>
+    <div class="log-box" id="logBox"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="card" id="resultsArea">
+    <label>// النتائج</label>
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="links-preview" id="linksPreview"></div>
+    <button class="btn-download" id="downloadBtn">⬇ تحميل الملف النصي</button>
+    <div class="yt-dlp-hint" id="ytdlpHint"></div>
+  </div>
+
+</div>
+
+<footer>YT LINK EXTRACTOR &nbsp;|&nbsp; WORKS WITH yt-dlp</footer>
+
+<script>
+// ─────────────────────────────────────────────────────────
+//  State
+// ─────────────────────────────────────────────────────────
+let selectedDays = 0;
+let extractedLinks = [];
+let channelName = '';
+
+// ─────────────────────────────────────────────────────────
+//  Date filter buttons
+// ─────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const val = btn.dataset.days;
+    selectedDays = val === 'custom' ? 'custom' : parseInt(val);
+    document.getElementById('customDateWrap').classList.toggle('show', val === 'custom');
+  });
+});
+
+// ─────────────────────────────────────────────────────────
+//  Logging helper
+// ─────────────────────────────────────────────────────────
+function log(msg, type = '') {
+  const box = document.getElementById('logBox');
+  const line = document.createElement('span');
+  line.className = `log-line ${type}`;
+  line.textContent = '> ' + msg;
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+}
+
+function setStatus(msg) {
+  document.getElementById('progressStatus').textContent = msg;
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorBox');
+  el.textContent = '⚠ ' + msg;
+  el.classList.add('show');
+}
+
+function clearError() {
+  document.getElementById('errorBox').classList.remove('show');
+}
+
+// ─────────────────────────────────────────────────────────
+//  URL analysis — detect type & extract identifiers
+// ─────────────────────────────────────────────────────────
+function analyzeUrl(url) {
+  const u = url.trim();
+  if (!u) return null;
+
+  // Playlist
+  const plMatch = u.match(/[?&]list=([a-zA-Z0-9_-]+)/);
+  if (plMatch) return { type: 'playlist', id: plMatch[1] };
+
+  // Channel handle  /@name  or  /@name/shorts
+  const handleMatch = u.match(/youtube\.com\/@([^/?#]+)/);
+  if (handleMatch) {
+    const isShorts = /\/shorts/.test(u);
+    return { type: isShorts ? 'shorts' : 'channel', handle: handleMatch[1] };
+  }
+
+  // /channel/UCxxx
+  const chanMatch = u.match(/youtube\.com\/channel\/([a-zA-Z0-9_-]+)/);
+  if (chanMatch) return { type: 'channel', channelId: chanMatch[1] };
+
+  // /c/name  or  /user/name
+  const legacyMatch = u.match(/youtube\.com\/(?:c|user)\/([^/?#]+)/);
+  if (legacyMatch) return { type: 'channel', handle: legacyMatch[1] };
+
+  return null;
+}
+
+// ─────────────────────────────────────────────────────────
+//  Invidious — fetch via public instance with CORS
+// ─────────────────────────────────────────────────────────
+const INVIDIOUS = 'https://inv.nadeko.net'; // reliable public instance
+
+async function resolveChannelId(handle) {
+  // Try Invidious search to resolve @handle → UCxxx
+  const r = await fetch(`${INVIDIOUS}/api/v1/search?q=${encodeURIComponent('@' + handle)}&type=channel`);
+  if (!r.ok) throw new Error('فشل في البحث عن القناة');
+  const data = await r.json();
+  if (!data.length) throw new Error('لم يتم إيجاد القناة');
+  return { id: data[0].authorId, name: data[0].author };
+}
+
+async function fetchPlaylistLinks(playlistId, cutoff) {
+  const links = [];
+  let page = 1;
+  let total = null;
+
+  while (true) {
+    setStatus(`جلب الصفحة ${page}...`);
+    const r = await fetch(`${INVIDIOUS}/api/v1/playlists/${playlistId}?page=${page}`);
+    if (!r.ok) throw new Error('خطأ في جلب قائمة التشغيل');
+    const data = await r.json();
+
+    if (!total) {
+      total = data.videoCount || '?';
+      log(`اسم القائمة: ${data.title}`, 'info');
+      log(`إجمالي الفيديوهات: ${total}`, 'info');
+      channelName = sanitizeFilename(data.title || 'playlist');
+    }
+
+    const videos = data.videos || [];
+    if (!videos.length) break;
+
+    let done = false;
+    for (const v of videos) {
+      if (!v.videoId || isDeletedTitle(v.title)) continue;
+      if (cutoff && v.published && v.published * 1000 < cutoff) { done = true; break; }
+      links.push(`https://www.youtube.com/watch?v=${v.videoId}`);
+    }
+    if (done) break;
+    if (videos.length < 100) break;
+    page++;
+  }
+  return links;
+}
+
+async function fetchChannelLinks(channelId, type, cutoff) {
+  const links = [];
+  let continuation = null;
+  let page = 1;
+
+  // Get channel info first
+  const infoR = await fetch(`${INVIDIOUS}/api/v1/channels/${channelId}`);
+  if (!infoR.ok) throw new Error('فشل في جلب معلومات القناة');
+  const info = await infoR.json();
+  channelName = sanitizeFilename(info.author || channelId);
+  log(`القناة: ${info.author}`, 'info');
+  log(`المشتركون: ${fmt(info.subCount)}`, 'info');
+
+  const endpoint = type === 'shorts'
+    ? `/api/v1/channels/${channelId}/shorts`
+    : `/api/v1/channels/${channelId}/videos`;
+
+  while (true) {
+    setStatus(`جلب الصفحة ${page}...`);
+    const params = continuation ? `?continuation=${continuation}` : '';
+    const r = await fetch(`${INVIDIOUS}${endpoint}${params}`);
+    if (!r.ok) break;
+    const data = await r.json();
+
+    const videos = data.videos || [];
+    if (!videos.length) break;
+
+    let done = false;
+    for (const v of videos) {
+      if (!v.videoId || isDeletedTitle(v.title)) continue;
+      if (cutoff && v.published && v.published * 1000 < cutoff) { done = true; break; }
+      links.push(`https://www.youtube.com/watch?v=${v.videoId}`);
+    }
+
+    log(`الصفحة ${page}: +${videos.length} فيديو (المجموع: ${links.length})`, 'ok');
+    if (done || !data.continuation) break;
+    continuation = data.continuation;
+    page++;
+  }
+  return links;
+}
+
+// ─────────────────────────────────────────────────────────
+//  Helpers
+// ─────────────────────────────────────────────────────────
+function isDeletedTitle(t) {
+  if (!t) return true;
+  const l = t.toLowerCase();
+  return ['[deleted]','[private]','[unavailable]'].includes(l);
+}
+
+function sanitizeFilename(n) {
+  return n.replace(/[\\/*?:"<>|]/g, '_').trim().replace(/^\.+/, '') || 'output';
+}
+
+function fmt(n) {
+  if (!n) return '?';
+  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+  if (n >= 1e3) return (n/1e3).toFixed(1) + 'K';
+  return n.toString();
+}
+
+function deduplicate(arr) {
+  return [...new Set(arr)];
+}
+
+function getCutoff() {
+  if (selectedDays === 0) return null;
+  if (selectedDays === 'custom') {
+    const val = document.getElementById('customDate').value;
+    if (!val) return null;
+    return new Date(val).getTime();
+  }
+  return Date.now() - selectedDays * 86400000;
+}
+
+function buildFilename(name, type) {
+  const ts = new Date().toISOString().slice(0,19).replace(/[-:T]/g, (c) => c === 'T' ? '_' : c);
+  const suffix = type === 'playlist' ? 'playlist' : type === 'shorts' ? 'shorts' : 'links';
+  return `${name}_${suffix}_${ts}.txt`;
+}
+
+// ─────────────────────────────────────────────────────────
+//  Main extract
+// ─────────────────────────────────────────────────────────
+async function startExtract() {
+  clearError();
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url) { showError('أدخل رابط القناة أولاً'); return; }
+
+  const parsed = analyzeUrl(url);
+  if (!parsed) { showError('الرابط غير صحيح أو غير مدعوم'); return; }
+
+  // Reset UI
+  extractedLinks = [];
+  channelName = '';
+  document.getElementById('logBox').innerHTML = '';
+  document.getElementById('resultsArea').classList.remove('show');
+  document.getElementById('progressArea').classList.add('show');
+  document.getElementById('extractBtn').disabled = true;
+
+  const bar = document.getElementById('progressBar');
+  bar.classList.add('indeterminate');
+
+  const cutoff = getCutoff();
+  if (cutoff) log(`فلتر التاريخ: منذ ${new Date(cutoff).toLocaleDateString('ar')}`, 'info');
+
+  try {
+    let links = [];
+
+    if (parsed.type === 'playlist') {
+      log(`نوع: قائمة تشغيل — ${parsed.id}`, 'info');
+      links = await fetchPlaylistLinks(parsed.id, cutoff);
+
+    } else {
+      // Resolve channel ID if needed
+      let channelId = parsed.channelId;
+      if (!channelId && parsed.handle) {
+        log(`جاري تحليل القناة @${parsed.handle}...`, 'info');
+        setStatus('تحليل القناة...');
+        const resolved = await resolveChannelId(parsed.handle);
+        channelId = resolved.id;
+        channelName = sanitizeFilename(resolved.name);
+        log(`تم إيجاد القناة: ${resolved.name}`, 'ok');
+      }
+
+      log(`نوع: ${parsed.type === 'shorts' ? 'Shorts' : 'فيديوهات القناة'}`, 'info');
+      links = await fetchChannelLinks(channelId, parsed.type, cutoff);
+    }
+
+    // Dedup
+    const before = links.length;
+    links = deduplicate(links);
+    const dupsRemoved = before - links.length;
+    if (dupsRemoved > 0) log(`إزالة مكرر: ${dupsRemoved}`, 'info');
+
+    extractedLinks = links;
+
+    if (!links.length) {
+      throw new Error('لم يتم العثور على فيديوهات مطابقة للفلتر');
+    }
+
+    log(`✅ تم الانتهاء — ${links.length} لينك`, 'ok');
+    setStatus('✅ اكتمل!');
+    bar.classList.remove('indeterminate');
+    bar.style.width = '100%';
+
+    showResults(parsed.type, dupsRemoved);
+
+  } catch (err) {
+    log('❌ ' + err.message, 'err');
+    setStatus('❌ خطأ');
+    bar.classList.remove('indeterminate');
+    bar.style.background = 'var(--accent)';
+    showError(err.message);
+  } finally {
+    document.getElementById('extractBtn').disabled = false;
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+//  Show results
+// ─────────────────────────────────────────────────────────
+function showResults(type, dupsRemoved) {
+  const area = document.getElementById('resultsArea');
+  area.classList.add('show');
+
+  // Stats
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-box"><span class="stat-num">${extractedLinks.length}</span><span class="stat-label">لينك محفوظ</span></div>
+    <div class="stat-box"><span class="stat-num" style="color:var(--accent2)">${dupsRemoved}</span><span class="stat-label">مكرر مُزال</span></div>
+    <div class="stat-box"><span class="stat-num" style="color:#aaa">${type === 'shorts' ? 'Shorts' : type === 'playlist' ? 'Playlist' : 'Channel'}</span><span class="stat-label">نوع المصدر</span></div>
+  `;
+
+  // Preview
+  const preview = document.getElementById('linksPreview');
+  preview.innerHTML = extractedLinks.slice(0, 50).join('\n');
+  if (extractedLinks.length > 50) {
+    preview.innerHTML += `\n... و ${extractedLinks.length - 50} لينك آخر`;
+  }
+
+  // Download
+  const filename = buildFilename(channelName || 'output', type);
+  document.getElementById('downloadBtn').onclick = () => downloadFile(filename);
+
+  document.getElementById('ytdlpHint').innerHTML =
+    `// لتنزيل الكل:<br><span>yt-dlp -a "${filename}"</span>`;
+}
+
+function downloadFile(filename) {
+  const blob = new Blob([extractedLinks.join('\n') + '\n'], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
+</body>
+</html>

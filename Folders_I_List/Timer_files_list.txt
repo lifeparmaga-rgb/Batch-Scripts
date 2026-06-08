@@ -1,0 +1,16 @@
+============================== 
+[FOLDER] D:\Batch Scripts\Timer 
+============================== 
+    3 Predefined_Timers.bat 
+    3 Predefined_Timers_With_Accending_Counter.bat 
+    3 Timers_WithoutPredifined.bat 
+    files_list.txt 
+    Timer_Only_One_Timer.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Timer\Timer_App 
+============================== 
+    Timer_App.bat 
+    Timer_Log.txt 
+    Timer_One_Part.bat 
+
+- عندى 6 تطبيقات مؤقت ما الفرق بيهم

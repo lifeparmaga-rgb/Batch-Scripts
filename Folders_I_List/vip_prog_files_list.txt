@@ -1,0 +1,20 @@
+============================== 
+[FOLDER] D:\Batch Scripts\Vip_Prog_On_Files 
+============================== 
+
+    Add-Folders-ToPath.ps1 
+    addtoenv.ps1 
+
+    clean_names.ps1 
+
+    createshortcut.bat 
+    create_obs_file_link_v3.bat 
+    dashboard.txt 
+    FileHub.html 
+    files_list.txt 
+    Get_Folder_Videos_Names + Length.ps1 
+    lsd.bat 
+    lsf.bat 
+    opensearchwords.bat 
+    rename-videos-by-date.ps1 
+    WatchAndAddToPATH.ps1 

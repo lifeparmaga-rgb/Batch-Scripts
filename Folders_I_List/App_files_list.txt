@@ -1,0 +1,30 @@
+============================== 
+[FOLDER] D:\Batch Scripts\App 
+============================== 
+
+
+    backup_browser.bat 
+    backup_c_part.bat 
+    
+    clip_ltr.bat 
+    ConvertToICO.bat 
+    convert_all_here_into_ico.bat 
+    restore_browsers.bat 
+    
+    -----------------------------------------
+    below is vip 
+    -----------------------------------------
+    
+    CURRENT_DAY_FOLDER.bat 
+    files_list.txt 
+    size_GB_current_path.bat 
+    size_MB_current_path.bat 
+    
+    solve_mongo.bat 
+    
+    teleg.bat 
+    auto_translate.bat 
+    
+    choose.bat 
+    Add_Pathes_Into_User_Variable.txt 
+    

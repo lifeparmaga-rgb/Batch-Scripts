@@ -1,0 +1,13 @@
+<CodeSnippets>
+  <CodeSnippet>
+    <Header>
+      <Shortcut>hello</Shortcut>
+      <Title>Hello Snippet</Title>
+    </Header>
+    <Snippet>
+      <Code Language="csharp">
+Console.WriteLine("Hello World!");
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

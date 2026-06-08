@@ -1,0 +1,2 @@
+nd=nodemon 
+echo %nd%
