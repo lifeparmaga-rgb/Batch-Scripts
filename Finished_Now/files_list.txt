@@ -1,0 +1,126 @@
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now 
+============================== 
+    createheading.bat 
+    createheading.txt 
+    DotNetEF.bat 
+    files_list.txt 
+    lsd.bat 
+    lsf.bat 
+    NugEFClip.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Folders_I_List 
+============================== 
+    App_files_list.txt 
+    Batch Script Appebd Here_files_list.txt 
+    pathes_go_files_list.txt 
+    Pogramming Related wind_files_list.txt 
+    Programming Script_files_list.txt 
+    Timer_files_list.txt 
+    vip_prog_files_list.txt 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\other 
+============================== 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go 
+============================== 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go\Open Folders Pathes 
+============================== 
+    bat.bat 
+    c.bat 
+    d.bat 
+    docs.bat 
+    docx.bat 
+    downs.bat 
+    list_table_v1.bat 
+    list_table_v2.bat 
+    music.bat 
+    obj.bat 
+    obs.bat 
+    pics.bat 
+    screens.bat 
+    vids.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go\Open System Pathes 
+============================== 
+    appdata.bat 
+    env.bat 
+    home.bat 
+    localdir.bat 
+    roaming.bat 
+    STARTUP.BAT 
+    user.bat 
+    userprofile.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go\Running_Apps + Closes 
+============================== 
+    e..bat 
+    e.bat 
+    ex.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go\Websites_External 
+============================== 
+    avast.bat 
+    brave.bat 
+    deepseek.bat 
+    extensions.bat 
+    firefox.bat 
+    gdb.bat 
+    github.bat 
+    google.bat 
+    googlefonts.bat 
+    googlekeeps.bat 
+    gpt.bat 
+    json_w3school.bat 
+    mama.bat 
+    opera.bat 
+    photoshop.bat 
+    salah.bat 
+    typelit.bat 
+    vercel.bat 
+    virus.bat 
+    w3school.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go\Websites_External\Translate 
+============================== 
+    Google_Translate_Extension_Link_To_Download.bat 
+    translate.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go\Websites_External\Translate\I Don Not Want Now ever 
+============================== 
+    autotranslate.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go\Websites_External\VIP 
+============================== 
+    extensions.bat - Shortcut.lnk 
+    gdb.bat - Shortcut.lnk 
+    github.bat - Shortcut.lnk 
+    googlefonts.bat - Shortcut.lnk 
+    Google_Translate_Extension_Link_To_Download.bat - Shortcut.lnk 
+    json_w3school.bat - Shortcut.lnk 
+    photoshop.bat - Shortcut.lnk 
+    salah.bat - Shortcut.lnk 
+    translate.bat - Shortcut.lnk 
+    typelit.bat - Shortcut.lnk 
+    vercel.bat - Shortcut.lnk 
+    youtlength.bat - Shortcut.lnk 
+    YoutSearch_Solve_Space.bat - Shortcut.lnk 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Pathes_Go\Websites_External\Youtube_Related 
+============================== 
+    yout.bat 
+    youtlength.bat 
+    YoutSearch_Solve_Space.bat 
+============================== 
+[FOLDER] D:\Batch Scripts\Finished_Now\Shutdown 
+============================== 
+    Close_PC.ps1 
+    hibernateoff.bat 
+    hibernateon.bat 
+    hiberoff.bat 
+    hiberon.bat 
+    restart.bat 
+    shutdown.bat 
+    shutdown_cancel.bat 
+    shutdown_timer.bat 

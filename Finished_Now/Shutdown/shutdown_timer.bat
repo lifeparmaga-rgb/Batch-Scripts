@@ -1,0 +1,6 @@
+@echo off
+
+set /p time= Enter Time With Seconds To Shutdown
+set /a TIME=%time%
+shutdown -s -t %TIME%
+pause
